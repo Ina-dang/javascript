@@ -36,8 +36,40 @@ const quotes = [
         author: "Nikos Kazantzakis"
     },
     {
-        quote: "추구할 수 있는 용기가 있다면 우리의 모든 꿈은 이뤄질 수 있다. ",
-        author: "월트 디즈니"
+        quote: "우리가 하는 일은 계란으로 바위를 치는 일일지도 모르지만 누군가는 분명히 당신을 기억할 겁니다. 당신의 용기, 선택, 여정을요. ",
+        author: "나인하트"
+    },
+    {
+        quote: "생존가에게 가장 중요한 것은 기술도 지식도 아니다. 바로 삶에 대한 강한 의지다.",
+        author: "베어 그랑스"
+    },
+    {
+        quote: "높이나는 새일수록... 그 추락이 볼만하다네",
+        author: "아카이럼"
+    },
+    {
+        quote: "그는 아무것도 묻지 않았습니다. 다만 이곳에 들어섬으로써 스스로 깨달았습니다",
+        author: "하얀 마법사"
+    },
+    {
+        quote: "맹목적인 믿음을 강요하는 것은 언제나 사랑이죠. 신이 아니라요.",
+        author: "애런"
+    },
+    {
+        quote: "그게, 사실... 시기라는 건 남이 해결해줄 수 없단다. 스스로 불행한 자는 남을 시기하는 마음에서 벗어날 수 없지.",
+        author: "박첨지"
+    },
+    {
+        quote: "난 지금 웃을 수 있다는 것이 중요하다고 생각해. 지금 웃을 수 있다는 것은 내일을 꿈꿀 수 있다는 말이잖아?",
+        author: "티어"
+    },
+    {
+        quote: "우리들은 낙원을 찾아 떠도는 여행자들이야.. 그건 마치.. 헤헤, 끝나지 않는 짝사랑 같은 거라고나 할까...",
+        author: "니야"
+    },
+    {
+        quote: "구라벨은 오늘이 가장 싸다",
+        author: "메이플 유저"
     },
 ];
 
@@ -48,3 +80,4 @@ const todaysQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
 quote.innerText = todaysQuote.quote;
 author.innerText = todaysQuote.author;
+
