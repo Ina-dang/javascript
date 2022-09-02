@@ -1,3 +1,11 @@
 .hidden {
     display: none;
 }
+
+#background-img {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: auto;
+    height: 600px;
+}

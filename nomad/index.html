@@ -10,26 +10,51 @@
 </head>
 
 <body>
-    <form class="hidden" id="login-form">
-        <input maxlength="15" required type="text" placeholder="아이디를 입력하세요" />
-        <input type="submit" value="로그인" />
-    </form>
-    <h2 id="clock">00:00:00</h2>
-    <h1 id="greeting" class="hidden"></h1>
-    <form id="todo-form">
-        <input type="text" placeholder="할 일을 적으세요" required>
-    </form>
-    <ul id="todo-list">
-    </ul>
-    <div id="quote">
-        <span></span>
-        <span></span>
-    </div>
+    <header>
+        <nav>
+            <form class="hidden" id="login-form">
+                <input maxlength="15" required type="text" placeholder="아이디를 입력하세요" />
+                <input type="submit" value="로그인" />
+            </form>
+            <p id="greeting" class="hidden"></p>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2 id="clock">00:00:00</h2>
+        </section>
+        <section>
+            <form id="todo-form">
+                <input type="text" placeholder="오늘 할 일" required>
+            </form>
+            <ul id="todo-list">
+            </ul>
+        </section>
+        <section>
+            <div id="quote">
+                <span></span>
+                <span></span>
+            </div>
+        </section>
+        <section>
+            <div id="weather">
+                <span></span>
+                <span></span>
+            </div>
+        </section>
+        <section>
+            <div id="background-img"></div>
+        </section>
+    </main>
+    <footer>
+
+    </footer>
     <script src="js/clock.js"></script>
     <script src="js/greeting.js"></script>
     <script src="js/quotes.js"></script>
     <script src="js/background.js"></script>
     <script src="js/todo.js"></script>
+    <script src="js/weather.js"></script>
 </body>
 
 </html>
