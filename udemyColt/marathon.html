@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Race Register Form</title>
+  </head>
+  <body>
+    <div>
+      <h1>Race Registration!</h1>
+      <form action="">
+        <div>
+          <p>
+            <label for="first">First Name</label>
+            <input type="text" name="first" id="first" required />
+            <label for="last">Last name</label>
+            <input type="text" name="last" id="last" required />
+          </p>
+        </div>
+        <fieldset>
+          <legend>Select a Race</legend>
+          <div>
+            <p>
+              <input type="radio" id="5k" name="race" />
+              <label for="5k">Fun Run 5k</label>
+            </p>
+            <p>
+              <input type="radio" id="half" name="race" />
+              <label for="half">Half Marathon</label>
+            </p>
+            <p>
+              <input type="radio" id="full" name="race" />
+              <label for="full">Full Marathon</label>
+            </p>
+          </div>
+        </fieldset>
+        <div>
+          <p>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required />
+            <label for="password">password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              minlength="3"
+              maxlength="15"
+              required
+            />
+          </p>
+          <p>
+            <label for="age">Select Age Group</label>
+            <select name="age" id="age">
+              <option value="kids" selected>under 18</option>
+              <option value="teen">18-20</option>
+              <option value="adult">21-50</option>
+              <option value="senior">61+</option>
+            </select>
+          </p>
+        </div>
+        <button>Register!</button>
+      </form>
+    </div>
+  </body>
+</html>
