@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forms Demo</title>
+  </head>
+  <body>
+    <h1>Forms Demo</h1>
+    <div>
+      <form action="/tacos">
+        <button type="button">PLEASE DO NOT SUBMIT THE FORM</button>
+        <p>
+          <label for="username">Enter a Username: </label>
+          <input
+            id="username"
+            type="text"
+            placeholder="username"
+            name="username"
+          />
+        </p>
+        <p>
+          <label for="password">Enter a password: </label>
+          <input
+            id="password"
+            type="password"
+            placeholder="password"
+            name="password"
+          />
+        </p>
+        <button type="button">IN THE MIDDLE!</button>
+        <p>
+          <label for="colorpicker">Enter a Colour: </label>
+          <input id="colorpicker" type="color" name="color" />
+        </p>
+        <p>
+          <label for="number">Enter a number: </label>
+          <input
+            id="number"
+            type="number"
+            placeholder="enter a number"
+            name="number"
+            min="0"
+            max="1000"
+            step="5"
+          />
+        </p>
+        <button>Submit</button>
+        <button type="button">Submit</button>
+        <input type="submit" value="Click Me!" />
+      </form>
+      <hr />
+      <button>NOT INSIDE FORM</button>
+    </div>
+    <div>
+      <form action="https://www.reddit.com/search">
+        <label for="searchR"></label>
+        <input type="text" name="q" id="searchR" />
+        <button>SEARCH</button>
+      </form>
+      <form action="https://www.google.com/search">
+        <label for="searchG"></label>
+        <input type="text" name="q" id="searchG" />
+        <button>SEARCH</button>
+      </form>
+      <form action="https://www.youtube.com/results">
+        <label for="searchY"></label>
+        <input type="text" name="search_query" id="searchY" />
+        <button>SEARCH</button>
+      </form>
+      <h2>MORE INPUTS</h2>
+      <form action="/birds">
+        <p>
+          <input type="checkbox" name="agree_tacos" id="agree" />
+          <label for="agree">I agree to everything</label>
+        </p>
+        <p>
+          <input
+            type="radio"
+            name="select_tacos"
+            id="lettuce"
+            value="lettuce"
+          />
+          <label for="lettuce">lettuce</label>
+          <input type="radio" name="select_tacos" id="tomato" value="tomato" />
+          <label for="tomato">tomato</label>
+          <input
+            type="radio"
+            name="select_tacos"
+            id="cucumber"
+            value="cucumber"
+          />
+          <label for="cucumber">cucumber</label>
+        </p>
+        <p>
+          <label for="meal">Please Select an Entree</label>
+          <select name="meal" id="meal">
+            <option value="fish">Fish</option>
+            <option value="Veg" selected>Vegetarian</option>
+            <option value="Steak">Steak</option>
+          </select>
+        </p>
+        <p>
+          <label for="cheese">Amount of Cheese: </label>
+          <input
+            type="range"
+            id="cheese"
+            name="cheese_level"
+            min="1"
+            max="9"
+            value="3"
+          />
+        </p>
+        <p>
+          <label for="story">Any Special Story?</label>
+          <textarea
+            name="story"
+            id="story"
+            cols="30"
+            rows="3"
+            placeholder="Type something here"
+          ></textarea>
+        </p>
+        <button>Submit</button>
+      </form>
+    </div>
+    <div>
+      <h2>Validations Demo</h2>
+      <form action="/dummy">
+        <label for="first">Enter First Name</label>
+        <input type="text" name="first" id="first" required />
+        <p>
+          <label for="username">Username</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            minlength="3"
+            maxlength="1e5"
+            required
+          />
+        </p>
+        <p>
+          <label for="email">Enter your email</label>
+          <input type="email" name="email" id="email" required />
+        </p>
+        <p>
+          <label for="url">Enter your URL</label>
+          <input type="url" name="url" id="url" />
+        </p>
+        <button>button</button>
+      </form>
+    </div>
+  </body>
+</html>
