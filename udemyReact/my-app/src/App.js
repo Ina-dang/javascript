@@ -7,13 +7,13 @@ function App() {
     <div>
       <Layout>
         <Switch>
-          <Route path='/'>
+          <Route exact path='/'>
             <AllMeetupsPage />
           </Route>
-          <Route path='/new'>
+          <Route exact path='/new'>
             <NewMeetupPage />
           </Route>
-          <Route path='/favorites'>
+          <Route exact path='/favorites'>
             <FavoritePage />
           </Route>
         </Switch>
