@@ -9,7 +9,7 @@ function AllMeetupsPage() {
     useEffect(() => {
         setIsLoading(true);
         fetch(
-            'https://{url}.firebaseio.com/meetups.json'
+            'https://react-getting-dashed-default-rtdb.firebaseio.com/meetups.json'
         )
             .then((response) => {
                 return response.json();
