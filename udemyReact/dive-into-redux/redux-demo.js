@@ -1,4 +1,4 @@
-const { createStore } = require("redux");
+const redux = require("redux");
 // import { legacy_createStore as createStore } from 'redux';
 
 const counterReducer = (state = { counter: 0 }, action) => {
@@ -7,7 +7,9 @@ const counterReducer = (state = { counter: 0 }, action) => {
     }
 };
 
-const store = createStore(counterReducer)
+const store = redux.createStore(counterReducer)
+
+console.log(store.getState())
 
 const counterSubscriber = () => {
     const latestState = store.getState()
