@@ -1,7 +1,7 @@
 const { createStore } = require("redux");
 // import { legacy_createStore as createStore } from 'redux';
 
-const counterReducer = (state, action) => {
+const counterReducer = (state = { counter: 0 }, action) => {
     return {
         counter: state.counter + 1
     }
