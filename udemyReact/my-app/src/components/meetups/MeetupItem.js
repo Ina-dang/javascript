@@ -17,7 +17,7 @@ function MeetupItem(props) {
                 id: props.id,
                 title: props.title,
                 description: props.description,
-                image: props.iamge,
+                image: props.image,
                 address: props.address,
             })
         }
