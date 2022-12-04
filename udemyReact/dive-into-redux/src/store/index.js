@@ -1,6 +1,6 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-const initialState = { counter: 0, showCounter: true };
+const initialCountState = { counter: 0, showCounter: true };
 
 /* 상태가 여러 조각으로 나뉘어져 있을 때 유용
 서로다른 리듀서에 해당하는 고유 액션 식별자를 자동으로 생성
@@ -8,7 +8,7 @@ const initialState = { counter: 0, showCounter: true };
 */
 const counterSlice = createSlice({
   name: "counter",
-  initialState,
+  initialState: initialCountState,
   // 객체 혹은 맵이라 생각하면됨
   reducers: {
     /* 기존의 if reducer들을 이렇게 변경. 자동으로 최근의 값을 받는다
@@ -40,16 +40,36 @@ const counterSlice = createSlice({
   },
 });
 
+const initialAuthState = {
+  isAuthenticated: false,
+};
+
+const authSlice = createSlice({
+  name: "authentication",
+  initialState: initialAuthState,
+  reducers: {
+    login(state) {
+      state.isAuthenticated = true;
+    },
+    logout(state) {
+      state.isAuthenticated = false;
+    },
+  },
+});
+
 /* 
 여러개의 리듀서를 하나의 리듀서로 합칠 수 있음
 
 */
 const store = configureStore({
   // 객체를 설정해서 그 안에 속성을 정할 수 있음. configureStore가 병합해줌
-  // reducer: { counter: counterSlice.reducer }
-  // 근데 키 값 하나라 객체에 안넣고 곧바로 주요 리듀서로 할당함
-  reducer: counterSlice.reducer,
+  reducer: {
+    counter: counterSlice.reducer,
+    auth: authSlice.reducer,
+  },
 });
 
 export const counterActions = counterSlice.actions;
+export const authActions = authSlice.actions;
+
 export default store;
