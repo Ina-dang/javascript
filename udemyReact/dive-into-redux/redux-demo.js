@@ -23,6 +23,8 @@ const counterSubscriber = () => {
     console.log(latestState)
 }
 
+// react-redux 를 사용하면 자동으로 섭스크립션 설정해준다
+// 따로 설정없이도 자동으로 최신의 업데이트 상태를 받을 수 있음
 store.subscribe(counterSubscriber);
 
 store.dispatch({ type: 'increment' })
