@@ -1,4 +1,4 @@
-import classes from './UserProfile.module.css';
+import classes from "./UserProfile.module.css";
 
 const UserProfile = () => {
   return (
@@ -8,4 +8,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export { UserProfile };
