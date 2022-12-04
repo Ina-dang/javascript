@@ -2,7 +2,10 @@ import { configureStore, createSlice } from "@reduxjs/toolkit"
 
 const initialState = { counter: 0, showCounter: true }
 
-// 상태가 여러 조각으로 나뉘어져 있을 때 유용
+/* 상태가 여러 조각으로 나뉘어져 있을 때 유용
+서로다른 리듀서에 해당하는 고유 액션 식별자를 자동으로 생성
+(액션 객체 타입, 액션 기본생성자 자동 생성)
+*/
 const counterSlice = createSlice({
     name: 'counter',
     initialState,
@@ -22,19 +25,21 @@ const counterSlice = createSlice({
             이 상태가 변하지않도록 오버라이드를 해줌
             ==> 내부적으로 알아서 변경할 수 없는 코드로 변환해줌
             */
-            state.increment++;
+            state.counter++;
         },
         decrement(state) {
             state.counter--
         },
         increase(state, action) {
-            state.counter = state.counter + action.amount
+            // 툴킷이 자동으로 액션생성자를 생성하기 때문에 필드명을 꼭 payload로 해줘야함
+            state.counter = state.counter + action.payload
         },
         toggleCounter(state) {
             state.showCounter = !state.showCounter
         }
     }
 })
+
 
 /* 
 여러개의 리듀서를 하나의 리듀서로 합칠 수 있음
@@ -48,4 +53,5 @@ const store = configureStore({
 
 });
 
+export const counterActions = counterSlice.actions;
 export default store
