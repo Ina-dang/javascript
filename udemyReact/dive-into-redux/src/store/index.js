@@ -1,7 +1,4 @@
-import { legacy_createStore as createStore } from "redux"
-import { createSlice } from "@reduxjs/toolkit"
-
-export const INCREMENT = 'increment'
+import { configureStore, createSlice } from "@reduxjs/toolkit"
 
 const initialState = { counter: 0, showCounter: true }
 
@@ -31,7 +28,7 @@ const counterSlice = createSlice({
             state.counter--
         },
         increase(state, action) {
-            state.counter + action.amount
+            state.counter = state.counter + action.amount
         },
         toggleCounter(state) {
             state.showCounter = !state.showCounter
@@ -39,6 +36,16 @@ const counterSlice = createSlice({
     }
 })
 
-const store = createStore(counterSlice.reducer);
+/* 
+여러개의 리듀서를 하나의 리듀서로 합칠 수 있음
+
+*/
+const store = configureStore({
+    // 객체를 설정해서 그 안에 속성을 정할 수 있음. configureStore가 병합해줌
+    // reducer: { counter: counterSlice.reducer }
+    // 근데 키 값 하나라 객체에 안넣고 곧바로 주요 리듀서로 할당함
+    reducer: counterSlice.reducer
+
+});
 
 export default store
