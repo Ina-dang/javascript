@@ -1,0 +1,46 @@
+/* 영향x */
+span {
+  background-color: palevioletred;
+  border: 1px solid black;
+  width: 500px;
+  padding: 50px;
+  margin: 50px;
+}
+
+/* block요소는 영향 ㅇ */
+h1 {
+  background-color: turquoise;
+  border: 1px solid black;
+  width: 500px;
+  padding: 50px;
+  margin: 50px;
+  display: none;
+}
+
+/* 인라인블록 */
+#block {
+  height: 200px;
+  width: 200px;
+  background-color: olivedrab;
+  border: 5px solid black;
+  display: inline-block;
+  margin: 50px;
+}
+
+section {
+  background-color: #6d6875;
+  width: 800px;
+  height: 800px;
+}
+
+#unit {
+  font-size: 40px;
+  border: 1px solid black;
+  line-height: 80px;
+}
+
+section .child {
+  background-color: #e5989b;
+  width: 50%;
+  height: 50%;
+}

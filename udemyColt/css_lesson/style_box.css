@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+}
+
+div {
+  width: 300px;
+  height: 300px;
+  background-color: #e5989b;
+}
+
+h1 {
+  background-color: pink;
+  width: 200px;
+  text-align: center;
+
+  color: #ffffff;
+  padding: 100px 0 0 100px;
+  margin: 0;
+}
+
+span {
+  margin-left: 30px;
+}
+
+#one {
+  background-color: #e5989f;
+  border: 5px solid black;
+  /* box-sizing: border-box; */
+  border-radius: 3%;
+  margin: 0 0 100px 50px;
+}
+
+#two {
+  background-color: #b5838d;
+  border: 3px dashed #ffcdb2;
+  border-left-width: 7px;
+  border-top-left-radius: 30%;
+}
+
+#three {
+  background-color: #6d6875;
+  border: 5px solid black;
+  border-left-style: dotted;
+  border-radius: 50%;
+}
