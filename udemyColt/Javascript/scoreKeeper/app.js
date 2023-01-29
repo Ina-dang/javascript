@@ -15,8 +15,10 @@ player1Button.addEventListener("click", function () {
     player1Score += 1;
     if (player1Score === winningScore) {
       gameOver = true;
-      player1.classList.add("winner");
-      player2.classList.add("loser");
+      player1.classList.add("has-text-success");
+      player2.classList.add("has-text-danger");
+      player1Button.disabled = true;
+      player2Button.disabled = true;
     }
     player1.textContent = player1Score;
   }
@@ -27,8 +29,10 @@ player2Button.addEventListener("click", function () {
     player2Score += 1;
     if (player2Score === winningScore) {
       gameOver = true;
-      player1.classList.add("loser");
-      player2.classList.add("winner");
+      player1.classList.add("has-text-danger");
+      player2.classList.add("has-text-success");
+      player1Button.disabled = true;
+      player2Button.disabled = true;
     }
     player2.textContent = player2Score;
   }
@@ -47,6 +51,8 @@ function reset() {
   player2Score = 0;
   player1.innerText = player1Score;
   player2.innerText = player2Score;
-  player1.classList.remove("winner", "loser");
-  player2.classList.remove("winner", "loser");
+  player1.classList.remove("has-text-success", "has-text-danger");
+  player2.classList.remove("has-text-success", "has-text-danger");
+  player1Button.disabled = false;
+  player2Button.disabled = false;
 }

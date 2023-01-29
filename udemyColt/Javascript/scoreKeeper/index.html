@@ -10,60 +10,67 @@
     />
 
     <title>점수판만들기</title>
-    <style>
-      .winner {
-        color: greenyellow;
-      }
-      .loser {
-        color: lightcoral;
-      }
-    </style>
+    <style></style>
   </head>
   <body>
     <div class="container">
       <div class="columns">
         <div class="column is-half is-offset-one-quarter">
           <div class="card">
+            <div class="card-image">
+              <figure class="image is-2by1">
+                <img
+                  src="https://images.unsplash.com/photo-1534158914592-062992fbe900?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3784&q=80"
+                  alt=""
+                />
+              </figure>
+            </div>
             <header class="card-header">
-              <p class="card-header-title">Component</p>
-              <button class="card-header-icon" aria-label="more options">
-                <span class="icon">
-                  <i class="fas fa-angle-down" aria-hidden="true"></i>
-                </span>
-              </button>
+              <p class="card-header-title">점수판</p>
             </header>
             <div class="card-content">
               <div class="content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Phasellus nec iaculis mauris.
-                <a href="#">@bulmaio</a>. <a href="#">#css</a>
-                <a href="#">#responsive</a>
-                <br />
-                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                <h1 class="title is-1">
+                  <span id="player1">0</span> to <span id="player2">0</span>
+                </h1>
+                <p class="subtitle">아래 버튼을 클릭하여 점수를 추가하세요.</p>
+              </div>
+              <label for="playto" class="label is-large is-inline"
+                >게임 수</label
+              >
+              <div class="select is-rounded">
+                <select name="" id="playto">
+                  <option value="3">3</option>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                </select>
               </div>
             </div>
             <footer class="card-footer">
-              <a href="#" class="card-footer-item">Save</a>
-              <a href="#" class="card-footer-item">Edit</a>
-              <a href="#" class="card-footer-item">Delete</a>
+              <button
+                id="player1button"
+                class="is-primary is-light button card-footer-item is-large"
+              >
+                +1 Player One
+              </button>
+              <button
+                id="player2button"
+                class="is-info is-light button card-footer-item is-large"
+              >
+                +1 Player Two
+              </button>
+              <button
+                id="reset"
+                class="is-danger is-light button card-footer-item is-large"
+              >
+                reset
+              </button>
             </footer>
           </div>
         </div>
       </div>
     </div>
-    <h1>
-      <span id="player1">0</span>
-      to
-      <span id="player2">0</span>
-    </h1>
-    <select name="" id="playto">
-      <option value="3">3</option>
-      <option value="5">5</option>
-      <option value="10">10</option>
-    </select>
-    <button id="player1button">+1 Player One</button>
-    <button id="player2button">+1 Player One</button>
-    <button id="reset">reset</button>
+
     <script src="app.js"></script>
   </body>
 </html>
