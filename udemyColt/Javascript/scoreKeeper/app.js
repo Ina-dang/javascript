@@ -15,6 +15,8 @@ player1Button.addEventListener("click", function () {
     player1Score += 1;
     if (player1Score === winningScore) {
       gameOver = true;
+      player1.classList.add("winner");
+      player2.classList.add("loser");
     }
     player1.textContent = player1Score;
   }
@@ -25,6 +27,8 @@ player2Button.addEventListener("click", function () {
     player2Score += 1;
     if (player2Score === winningScore) {
       gameOver = true;
+      player1.classList.add("loser");
+      player2.classList.add("winner");
     }
     player2.textContent = player2Score;
   }
@@ -43,4 +47,6 @@ function reset() {
   player2Score = 0;
   player1.innerText = player1Score;
   player2.innerText = player2Score;
+  player1.classList.remove("winner", "loser");
+  player2.classList.remove("winner", "loser");
 }
