@@ -45,10 +45,10 @@ section:nth-of-type(7) article {
 section:nth-of-type(8) article {
   transform: rotateY(45deg);
 }
-section:nth-of-type(9) article {
+section:nth-of-type(10) article {
   transform: translateZ(100px);
 }
-section:nth-of-type(10) article {
+section:nth-of-type(11) article {
   transform: translateZ(-100px);
 }
 
