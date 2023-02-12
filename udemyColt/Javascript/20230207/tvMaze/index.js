@@ -2,12 +2,21 @@ const form = document.querySelector("#searchForm");
 form.addEventListener("submit", async function (e) {
   e.preventDefault();
   const searchTerm = form.elements.query.value;
+  const config = { params: { country: "KR", q: searchTerm } };
   const response = await axios.get(
-    `https://api.tvmaze.com/search/shows?q=${searchTerm}`
+    `https://api.tvmaze.com/search/shows`,
+    config
   );
-  console.log(response.data[0].show.image.medium);
-  const newImage = document.createElement("IMG");
-  console.log(newImage);
-  newImage.src = response.data[0].show.image.medium;
-  document.body.append(newImage);
+  makeImages(response.data);
+  form.elements.query.value = "";
 });
+
+const makeImages = (shows) => {
+  for (let result of shows) {
+    if (result.show.image) {
+      const image = document.createElement("IMG");
+      image.src = result.show.image.medium;
+      document.body.append(image);
+    }
+  }
+};
