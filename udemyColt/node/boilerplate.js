@@ -9,9 +9,11 @@ const folderName = process.argv[2] || 'Project';
 // 동기 방식
 try {
   fs.mkdirSync(folderName);
-  fs.writeFileSync(`${folderName}/index.html`);
-  fs.writeFileSync(`${folderName}/app.js`);
-  fs.writeFileSync(`${folderName}/styles.css`);
+  fs.writeFileSync(`${folderName}/index.html`, '');
+  fs.writeFileSync(`${folderName}/app.js`, '');
+  fs.writeFileSync(`${folderName}/styles.css`, '');
 } catch (error) {
+  console.log('///////////////////////////////////');
   console.log(error);
+  console.log('///////////////////////////////////');
 }
