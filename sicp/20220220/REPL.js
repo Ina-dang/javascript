@@ -50,12 +50,10 @@ console.log(5 + 4 + ((2 - (3 - (6 + 4 / 5))) / 3) * (6 - 2) * (2 - 7));
 // TODO 세 개의 수를 받고 셋 중 가장 작은것을 제외한 두 수의 제곱들을 합한 결과를 돌려주는 함수
 function smallest(x, y, z) {
   const arr = [x, y, z].sort((a, b) => b - a);
-  console.log(arr);
   arr.pop();
-  console.log(arr);
-  return console.log(Math.pow(arr[0], 2) + Math.pow(arr[1], 2));
+  return Math.pow(arr[0], 2) + Math.pow(arr[1], 2);
 }
-smallest(1, 7, 4);
+console.log(smallest(1, 7, 4));
 
 // 함수 작동방식 이해
 function plus(a, b) {
