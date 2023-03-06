@@ -2,11 +2,36 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-app.use((req, res) => {
-  console.log('새로운 요청 획득');
-  // res.send('요청을 받았습니다. 응답을 보냅니다.');
-  // res.send({ color: 'red' });
-  res.send('<h1>여기는 나의 웹페이지</h1>');
+// app.use((req, res) => {
+//   console.log('새로운 요청 획득');
+//   // res.send('요청을 받았습니다. 응답을 보냅니다.');
+//   // res.send({ color: 'red' });
+//   res.send('<h1>여기는 나의 웹페이지</h1>');
+// });
+
+app.get('/cats', (req, res) => {
+  console.log('고양이 페이지!!');
+  res.send('야옹');
+});
+
+app.post('/cats', (req, res) => {
+  console.log('post 고양이 페이지!!');
+  res.send('애옹');
+});
+
+app.get('/dogs', (req, res) => {
+  console.log('강아지 페이지!!');
+  res.send('월월');
+});
+
+app.get('/', (req, res) => {
+  console.log('메인 페이지!!');
+  res.send('메인');
+});
+
+app.get('*', (req, res) => {
+  console.log('아무거나!!');
+  res.send('암모고나 길을 잃었다');
 });
 
 app.listen(port, () => {
