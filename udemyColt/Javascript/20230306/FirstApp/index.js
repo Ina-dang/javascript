@@ -40,6 +40,16 @@ app.get('/dogs', (req, res) => {
   res.send('월월');
 });
 
+app.get('/search', (req, res) => {
+  const { q } = req.query;
+  console.log(req.query + '!!');
+  if (!q) {
+    res.send('검색 결과가 없습니다.');
+  } else {
+    res.send(`검색 결과:: ${q}`);
+  }
+});
+
 app.get('*', (req, res) => {
   console.log('아무거나!!');
   res.send('암모고나 길을 잃었다');
