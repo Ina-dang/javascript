@@ -15,6 +15,11 @@ app.get('/r/:subreddit', (req, res) => {
   res.render('subreddit', { subreddit });
 });
 
+app.get('/cats', (req, res) => {
+  const allCats = ['푸딩', '떼껄룩', '왕눈', '쿠키', '콜랑'];
+  res.render('cats', { allCats });
+});
+
 app.get('/random', (req, res) => {
   const num = Math.floor(Math.random() * 10 + 1);
   res.render('random', { random: num });
