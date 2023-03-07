@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
+const reddit = require('./data.json');
 
 //EJS지정 (외에도 여러가지 가능)
 app.set('view engine', 'ejs');
@@ -12,7 +13,12 @@ app.get('/', (req, res) => {
 
 app.get('/r/:subreddit', (req, res) => {
   const { subreddit } = req.params;
-  res.render('subreddit', { subreddit });
+  const data = reddit[subreddit];
+  if (data) {
+    res.render('subreddit', { ...data });
+  } else {
+    res.render('404', { subreddit });
+  }
 });
 
 app.get('/cats', (req, res) => {
