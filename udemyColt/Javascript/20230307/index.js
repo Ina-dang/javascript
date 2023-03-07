@@ -3,7 +3,10 @@ const path = require('path');
 const app = express();
 const reddit = require('./data.json');
 
-//EJS지정 (외에도 여러가지 가능)
+// 스타일시트 기본경로 지정
+app.use(express.static(path.join(__dirname, 'assets')));
+
+//EJS지정 (외에도 app.set은 여러가지 가능)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
