@@ -56,6 +56,14 @@ app.get('/comments/:id', (req, res) => {
   res.render('comments/show', { id, comment });
 });
 
+app.patch('/comments/:id', (req, res) => {
+  const { id } = req.params;
+  const newCommentText = req.body.comment;
+  const oldComment = comments.find((c) => c.id === id);
+  oldComment.comment = newCommentText;
+  res.redirect('/comments');
+});
+
 app.get('/tacos', (req, res) => {
   res.send('GET /tacos 응답중..');
   console.log('GET /tacos 응답중..');
