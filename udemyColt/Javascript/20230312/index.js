@@ -25,7 +25,15 @@ app.get('/products', async (req, res) => {
   const products = await Product.find({});
   // res.send('전체 상품 페이지');
   res.render('products/index', { products });
-  console.log(`전체 상품 페이지:: ${Products}`);
+  console.log(`전체 상품 페이지::', ${products}`);
+});
+
+app.get('/products/:id', async (req, res) => {
+  const { id } = req.params;
+  const product = await Product.findById(id);
+  // res.send(product);
+  console.log(`product:: ${product}`);
+  res.render('products/show', { product });
 });
 
 app.get('/', (req, res) => {
