@@ -20,12 +20,24 @@ async function main() {
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/products', async (req, res) => {
   const products = await Product.find({});
   // res.send('전체 상품 페이지');
   res.render('products/index', { products });
   console.log(`전체 상품 페이지::', ${products}`);
+});
+
+app.get('/products/new', (req, res) => {
+  res.render('products/new');
+});
+
+app.post('/products', async (req, res) => {
+  const newProduct = new Product(req.body);
+  await newProduct.save();
+  console.log(newProduct);
+  res.send('making your product!');
 });
 
 app.get('/products/:id', async (req, res) => {
