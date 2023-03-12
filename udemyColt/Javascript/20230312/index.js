@@ -21,9 +21,11 @@ async function main() {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.get('/dog', (req, res) => {
-  res.send('댕댕스 페이지');
-  console.log('댕댕스 페이지');
+app.get('/products', async (req, res) => {
+  const products = await Product.find({});
+  // res.send('전체 상품 페이지');
+  res.render('products/index', { products });
+  console.log(`전체 상품 페이지:: ${Products}`);
 });
 
 app.get('/', (req, res) => {
