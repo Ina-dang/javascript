@@ -18,11 +18,30 @@ const port = 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(morgan('dev'));
+app.use((req, res, next) => {
+  req.requestTime = Date.now();
+  console.log(req.method.toUpperCase(), req.path);
+  next();
+});
+
+app.use('/', (req, res, next) => {
+  console.log('I AM HERE');
+  next();
+});
+
+const verifyPassword = (req, res, next) => {
+  const { password } = req.query;
+  if (password === 'orange') {
+    return next();
+  }
+  return res.send('SORRY YOU NEED A PASSWORD!!!');
+};
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.get('/', (req, res) => {
+  console.log(`Main requestTime:: ${req.requestTime}`);
   res.render('home');
 });
 
@@ -63,6 +82,14 @@ app.delete('/campgrounds/:id', async (req, res) => {
   const { id } = req.params;
   await Campground.findByIdAndDelete(id);
   res.redirect('/campgrounds');
+});
+
+app.get('/secret', verifyPassword, (req, res) => {
+  res.send('MY SECRET IS: .....');
+});
+
+app.use((req, res) => {
+  res.status(404).send('404 NOT FOUND!');
 });
 
 app.listen(port, () => {
