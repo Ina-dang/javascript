@@ -2,10 +2,14 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
+const Joi = require('joi');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
 
+const catchAsync = require('./utils/catchAsync');
 const Campground = require('./models/campground');
+const ExpressError = require('./utils/ExpressError');
+const { campgroundSchema } = require('./schemas');
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp');
 
@@ -35,28 +39,49 @@ const verifyPassword = (req, res, next) => {
   if (password === 'orange') {
     return next();
   }
-  return res.send('SORRY YOU NEED A PASSWORD!!!');
+  throw new ExpressError('password wrong', 401);
 };
 
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+const validateCampground = (req, res, next) => {
+  const { error } = campgroundSchema.validate(req.body);
+  if (error) {
+    const message = error.details.map((el) => el.message).join(',');
+    throw new ExpressError(message, 400);
+  } else {
+    next();
+  }
+  console.log(result);
+};
+
 app.get('/', (req, res) => {
   console.log(`Main requestTime:: ${req.requestTime}`);
   res.render('home');
 });
 
-app.get('/campgrounds', async (req, res) => {
-  const campgrounds = await Campground.find({});
-  res.render('campgrounds/index', { campgrounds });
-});
+app.get(
+  '/campgrounds',
+  catchAsync(async (req, res) => {
+    const campgrounds = await Campground.find({});
+    res.render('campgrounds/index', { campgrounds });
+  })
+);
 
-app.post('/campgrounds', async (req, res) => {
-  const campground = new Campground(req.body.campground);
-  await campground.save();
-  res.redirect(`/campgrounds/${campground.id}`);
-});
+app.post(
+  '/campgrounds',
+  validateCampground,
+  catchAsync(async (req, res) => {
+    // if (!req.body.campground)
+    //   throw new ExpressError('유효하지 않은 캠프 데이터 입니다.', 404);
+
+    const campground = new Campground(req.body.campground);
+    await campground.save();
+    res.redirect(`/campgrounds/${campground.id}`);
+  })
+);
 
 app.get('/campgrounds/new', (req, res) => {
   res.render('campgrounds/new');
@@ -64,34 +89,52 @@ app.get('/campgrounds/new', (req, res) => {
 
 app.get('/campgrounds/:id', async (req, res) => {
   const campground = await Campground.findById(req.params.id);
+  if (!campground) {
+    throw new ExpressError('캡프가 존재하지 않습니다.', 404);
+  }
   res.render('campgrounds/show', { campground });
 });
 
-app.get('/campgrounds/:id/edit', async (req, res) => {
-  const campground = await Campground.findById(req.params.id);
-  res.render('campgrounds/edit', { campground });
+app.get(
+  '/campgrounds/:id/edit',
+  catchAsync(async (req, res) => {
+    const campground = await Campground.findById(req.params.id);
+    if (!campground) {
+      throw new ExpressError('캡프가 존재하지 않습니다', 404);
+    }
+    res.render('campgrounds/edit', { campground });
+  })
+);
+
+app.put(
+  '/campgrounds/:id',
+  validateCampground,
+  catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const campground = await Campground.findByIdAndUpdate(id, {
+      ...req.body.campground,
+    });
+    res.redirect(`/campgrounds/${campground._id}`);
+  })
+);
+
+app.delete(
+  '/campgrounds/:id',
+  catchAsync(async (req, res) => {
+    const { id } = req.params;
+    await Campground.findByIdAndDelete(id);
+    res.redirect('/campgrounds');
+  })
+);
+
+app.all('*', (req, res, next) => {
+  next(new ExpressError('Page Not Found!!', 404));
 });
 
-app.put('/campgrounds/:id', async (req, res) => {
-  const { id } = req.params;
-  const campground = await Campground.findByIdAndUpdate(id, {
-    ...req.body.campground,
-  });
-  res.redirect(`/campgrounds/${campground._id}`);
-});
-
-app.delete('/campgrounds/:id', async (req, res) => {
-  const { id } = req.params;
-  await Campground.findByIdAndDelete(id);
-  res.redirect('/campgrounds');
-});
-
-app.get('/secret', verifyPassword, (req, res) => {
-  res.send('MY SECRET IS: .....');
-});
-
-app.use((req, res) => {
-  res.status(404).send('404 NOT FOUND!');
+app.use((err, req, res, next) => {
+  const { status = 500, message = 'Something went wrong!' } = err;
+  if (!err.message) err.message = 'Oh no, Something went wrong!';
+  res.status(status).render('error', { err });
 });
 
 app.listen(port, () => {
