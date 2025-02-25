@@ -48,3 +48,20 @@ console.log(`첫번째 코드 실행 시간: ${bubbleTime}ms`); // 58ms
 arr = Array.from({ length: 10000 }, (_, k) => 10000 - k);
 const [sortTime, sortResult] = measureTime(solution, arr);
 console.log(`두번째 코드 실행 시간: ${sortTime}ms`); // 0ms
+
+/**        --------------------------------------------------                        */
+
+/**
+ * 배열 제어하기[O(NlogN)]
+ *
+ * 정수 배열을 하나 받는다. 배열의 중복값제거 후 배열데이터를 내림차순으로 정렬 반환하는 solution2함수 구현
+ */
+
+function solution2(arr) {
+  const uniqueArr = [...new Set(arr)]; //중복값 제거 (set=> 집합을 생성하는 자바스크립트 내장객체. 중복을 허용하지 않음, 이후 스프레드연산자를 통해 집합을 다시 배열로 변환)
+  console.log(`uniqueArr: ${uniqueArr}`);
+
+  return uniqueArr.sort((a, b) => b - a);
+}
+
+console.log(`solution2: ${solution2([4, 2, 2, 1, 3, 4, 2])}`);
