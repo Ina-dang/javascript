@@ -2,7 +2,12 @@
   "content_scripts": [
     {
       "matches": ["*://www.wavve.com/*"],
-      "js": ["common.js", "content.js"],
+      "js": [
+        "common.js",
+        "elementObserver.js",
+        "episodeManager.js",
+        "content.js"
+      ],
       "type": "module"
     }
   ],

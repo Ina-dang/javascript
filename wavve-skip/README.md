@@ -11,6 +11,7 @@
   - 옵저버패턴으로 변경 (content.js)
 - 25.03.04: 다음화 재생 때 비하인드 보고있는데도 넘어가버림
   - 1분 미만으로 남았을때는 다음화 재생 하지 않도록 수정
+  - OOP 도입: 코드 재사용성, 유지보수성, 데이터 캡슐화를 위해 클래스를 사용하여 리팩토링. 책임 분리를 명확히 하여 가독성과 확장성 향상.
 
 [해결해야할거]
 
@@ -19,3 +20,15 @@
   - 운영에도 똑같이 뜨려나.. 헤더에서 허용하는 방법은 위험할 것같아 고민중.
     > 오류내용  
     > content.js:68 Refused to run the JavaScript URL because it violates the following Content Security Policy directive: "script-src 'self' 'wasm-unsafe-eval' 'inline-speculation-rules' http://localhost:_ http://127.0.0.1:_ chrome-extension:". Either the 'unsafe-inline' keyword, a hash ('sha256-...'), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless the 'unsafe-hashes' keyword is present.
+
+## 파일 구조
+
+```bash
+📦wavve-skip
+ ┣ 📜common.js          # 유틸리티 함수
+ ┣ 📜elementObserver.js # DOM 변화 감지하는 옵저버 클래스
+ ┣ 📜episodeManager.js  # 오프닝 건너뛰기 및 다음 회차 재생 관리 클래스
+ ┣ 📜content.js         # 메인 로직: 각 클래스 조합하여 사용
+ ┣ 📜manifest.json
+ ┗ 📜README.md
+```

@@ -1,14 +1,20 @@
-globalThis.getContentIdFromUrl = function () {
-  const urlParams = new URLSearchParams(new URL(document.location.href).search);
-  return urlParams.get('contentid');
-};
+class Utility {
+  static getContentIdFromUrl() {
+    const urlParams = new URLSearchParams(
+      new URL(document.location.href).search
+    );
+    return urlParams.get('contentid');
+  }
 
-const getSeconds = (timeStr) => {
-  const [mm, ss] = timeStr.split(':').map(Number);
-  return mm * 60 + ss;
-};
+  static getSeconds(timeStr) {
+    const [mm, ss] = timeStr.split(':').map(Number);
+    return mm * 60 + ss;
+  }
 
-globalThis.isLessThanOneMinute = (start, end) => {
-  const diff = Math.abs(getSeconds(start) - getSeconds(end));
-  return diff < 60;
-};
+  static isLessThanOneMinute(start, end) {
+    const diff = Math.abs(Utility.getSeconds(start) - Utility.getSeconds(end));
+    return diff < 60;
+  }
+}
+
+globalThis.Utility = Utility; // 전역 객체에 클래스를 등록
