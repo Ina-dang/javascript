@@ -43,26 +43,38 @@ function observeElement(selector, callback, observeClass = false) {
 
 function skipOpening() {
   const skipOpeningButton = document.querySelector('.opening-skip-btn');
+
   if (skipOpeningButton) {
     skipOpeningButton.click();
   }
 }
 
-function getContentIdFromUrl() {
-  const urlParams = new URLSearchParams(new URL(document.location.href).search);
-  return urlParams.get('contentid');
-}
 function playNextEpisode() {
   const nextEposiodeButton = document.querySelector('.next-episode-box');
+
+  // Wavve의 다음 회차 재생 표시는 next-episode-box-hidden 클래스 유무로 나뉜다.
   if (
     nextEposiodeButton &&
     !nextEposiodeButton.classList.contains('next-episode-box-hidden')
   ) {
     const link = nextEposiodeButton.querySelector('a');
-    const thisContent = getContentIdFromUrl();
+    const thisContent = globalThis.getContentIdFromUrl();
     const lastContent =
       localStorage.getItem('lastContent') ??
       localStorage.setItem('lastContent', thisContent);
+
+    // 1분 미만으로 남았을 때는 남은 스토리 그냥 다 보기로 함
+    const durationElement = document.querySelector('.text-duration');
+    const nowElement = document.querySelector('.text-time ');
+
+    const duration = durationElement.textContent.split('/ ').pop();
+    const now = nowElement.textContent;
+
+    if (isLessThanOneMinute(duration, now)) {
+      return;
+    }
+
+    // 다음 회차에서 이전으로 넘어갔을때 자꾸 이전회를 볼 수 없게되어서 스토리지로 마지막 회차를 저장하게 수정
     if (link && lastContent !== thisContent) {
       localStorage.setItem('lastContent', thisContent);
       link.click();
