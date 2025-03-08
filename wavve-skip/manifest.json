@@ -5,7 +5,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://www.wavve.com/*"],
+      "matches": ["*://www.wavve.com/*", "*://www.tving.com/*"],
       "js": [
         "common.js",
         "elementObserver.js",
@@ -15,14 +15,14 @@
       "type": "module"
     }
   ],
-  "description": "Wavve에서 오프닝 건너뛰기랑 다음회차를 자동으로 재생해주는 크롬 확장 프로그램이에요!",
-  "host_permissions": ["*://www.wavve.com/*"],
+  "description": "OTT 오프닝 건너뛰기랑 다음회차를 자동으로 재생해주는 크롬 확장 프로그램이에요! 현재는 웨이브와 티빙이 가능합니다.",
+  "host_permissions": ["https://www.wavve.com/*", "https://www.tving.com/*"],
   "icons": {
     "16": "./images/16.png",
     "32": "./images/32.png"
   },
   "manifest_version": 3,
-  "name": "Wavve AutoPlay",
-  "permissions": ["activeTab"],
+  "name": "OTT JUMP",
+  "permissions": ["activeTab", "tabs", "storage"],
   "version": "1.0.0"
 }

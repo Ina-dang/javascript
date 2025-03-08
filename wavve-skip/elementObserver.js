@@ -9,9 +9,8 @@ class ElementObserver {
 
   observe() {
     const observer = new MutationObserver(() => {
-      const targetNode = document.querySelector(this.selector);
+      const targetNode = document.querySelector(`[class*="${this.selector}"]`);
       if (!targetNode) return;
-
       let currentState;
 
       if (this.observeClass) {
@@ -26,12 +25,16 @@ class ElementObserver {
 
       // 첫 번째 감지 시 상태를 변경하지 않고, 그 이후에 상태가 변경되었을 때만 콜백 실행
       if (
-        this.previousState !== undefined &&
+        // this.previousState !== undefined &&
         this.previousState !== currentState
       ) {
+        console.log(this.previousState, currentState);
         this.previousState = currentState; // 상태가 변경되면 previousState 갱신
         this.callback(targetNode); // 상태가 변화했을 때만 콜백 호출
       } else if (this.previousState === undefined) {
+        console.log(
+          `현재 상태: ${currentState}, 이전 상태: ${this.previousState}`
+        );
         // 첫 번째 상태 감지 시 이전 상태를 현재 상태로 설정
         this.previousState = currentState;
       }
