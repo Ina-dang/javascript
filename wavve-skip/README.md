@@ -29,7 +29,13 @@
 ## 파일 구조
 
 ```bash
-📦wavve-skip
+OTT-JUMP
+ ┣ 📂images
+ ┃ ┣ 📜16.png
+ ┃ ┗ 📜32.png
+ ┣ 📂pop
+ ┃ ┣ 📜popup.html
+ ┃ ┗ 📜popup.js
  ┣ 📜common.js          # 유틸리티 함수
  ┣ 📜elementObserver.js # DOM 변화 감지하는 옵저버 클래스
  ┣ 📜episodeManager.js  # 오프닝 건너뛰기 및 다음 회차 재생 관리 클래스
