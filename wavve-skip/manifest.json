@@ -1,4 +1,8 @@
 {
+  "action": {
+    "default_popup": "./pop/popup.html",
+    "default_icon": "./images/32.png"
+  },
   "content_scripts": [
     {
       "matches": ["*://www.wavve.com/*"],
@@ -13,6 +17,10 @@
   ],
   "description": "Wavve에서 오프닝 건너뛰기랑 다음회차를 자동으로 재생해주는 크롬 확장 프로그램이에요!",
   "host_permissions": ["*://www.wavve.com/*"],
+  "icons": {
+    "16": "./images/16.png",
+    "32": "./images/32.png"
+  },
   "manifest_version": 3,
   "name": "Wavve AutoPlay",
   "permissions": ["activeTab"],
