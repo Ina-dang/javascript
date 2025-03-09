@@ -9,10 +9,15 @@ function handleUrlChange() {
   }
 
   if (currentObserver) {
+    console.log('currentObserver:: ', currentObserver);
     currentObserver.disconnect();
+    currentObserver.null;
+    return;
   }
 
-  // createNewEpisodeObserver();
+  setTimeout(() => {
+    createNewEpisodeObserver();
+  }, 100);
 
   previousUrl = location.pathname;
 }
@@ -154,4 +159,4 @@ function playTivingNextEpisode(targetNode) {
   }
 }
 
-console.info('OTT JUMP 초기화 완료');
+console.info(`OTT JUMP 초기화 완료. ${Math.random()}`);
