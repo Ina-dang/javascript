@@ -3,11 +3,56 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
     <title>OTT JUMP</title>
   </head>
   <body>
-    <h1>OTT JUMP</h1>
-    <button id="clickButton">클릭!</button>
+    <header>
+      <h1>OTT JUMP</h1>
+    </header>
+    <main>
+      <!-- 구조: 전체켜기, 오프닝스킵, 엔딩스킵 -->
+      <section id="wavve">
+        <h2>웨이브</h2>
+        <label id="all">
+          <input role="switch" type="checkbox" />
+          <span>전체켜기</span>
+        </label>
+        <label id="openingSkip">
+          <input role="switch" type="checkbox" />
+          <span>오프닝 건너뛰기</span>
+        </label>
+        <label id="nextPlay">
+          <input role="switch" type="checkbox" />
+          <span>다음회차 자동재생</span>
+        </label>
+      </section>
+      <section id="tving">
+        <h2>티빙</h2>
+        <label id="all">
+          <input role="switch" type="checkbox" />
+          <span>전체켜기</span>
+        </label>
+        <label id="openingSkip">
+          <input role="switch" type="checkbox" />
+          <span>오프닝 건너뛰기</span>
+        </label>
+        <label id="nextPlay">
+          <input role="switch" type="checkbox" />
+          <span>다음회차 자동재생</span>
+        </label>
+      </section>
+    </main>
+    <footer>
+      <nav>
+        <a href="" target="_blank">Blog</a>
+        <a href="" target="_blank">Github</a>
+      </nav>
+      <p>
+        <span>ina9377@gmail.com</span><br />
+        <span>Copyright 2025. INA. All Rights Reserved.</span>
+      </p>
+    </footer>
     <script src="./popup.js"></script>
   </body>
 </html>

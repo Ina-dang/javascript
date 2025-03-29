@@ -1,0 +1,148 @@
+/* 기본적인 margin, padding 제거 및 box-sizing 설정 */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box !important;
+}
+
+/* 기본 폰트 스타일 설정 */
+html {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* 링크 스타일 초기화 */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 리스트 스타일 제거 */
+ul,
+ol {
+  list-style: none;
+}
+
+/* 버튼 스타일 초기화 */
+button,
+input,
+textarea {
+  border: none;
+  background: none;
+  font: inherit;
+}
+
+/* 기본적인 이미지 스타일 */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* 테이블 기본 스타일 초기화 */
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+/* 기본적인 focus 스타일 제거 */
+:focus {
+  outline: none;
+}
+
+/* 체크박스 토대로 스위치를 만들기 위해 체크박스 기본 스타일 제거*/
+[type='checkbox'] {
+  position: relative;
+  width: 2.25rem;
+  height: 1.25rem;
+  border: max(2px, 0.1rem) solid#788FA5;
+  border-radius: 1.25rem;
+  appearance: none;
+  &::before {
+    position: absolute;
+    left: 0;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background-color: #788fa5;
+    content: '';
+    transform: scale(0.8);
+    transition: left 250ms ease-in-out;
+  }
+  &:checked {
+    border-color: #4a90e2;
+    background-color: #4a90e2;
+    &::before {
+      left: 1rem;
+      background-color: #fff;
+    }
+  }
+  &:focus-visible {
+    outline: max(2px, 0.1rem) solid #4a90e2;
+    outline-offset: max(2px, 0.1rem);
+  }
+  &:enabled:hover {
+    box-shadow: 0 0 0 max(2px, 0.1rem) #c2ddf2;
+  }
+}
+label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: fit-content;
+
+  header {
+    width: 100%;
+    padding: 0.5rem 0;
+    background-color: #152b40;
+    color: #fff;
+    text-align: center;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    section {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      h2 {
+        padding-bottom: 0.5em;
+      }
+      label {
+        padding: 0.2em 0;
+        span {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+
+  footer {
+    padding: 1rem;
+    border-top: 1px solid #152b40;
+    background-color: E3F2FD;
+    nav {
+      padding-bottom: 1em;
+      a {
+        padding-right: 10px;
+        color: #152b40;
+        &:hover {
+          font-weight: 600;
+          color: #4a90e2;
+        }
+      }
+    }
+  }
+}

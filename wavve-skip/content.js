@@ -96,8 +96,8 @@ function playWavvesNextEpisode(targetNode) {
     const thisContent = globalThis.Utility.getContentIdFromUrl();
 
     const lastContent =
-      localStorage.getItem('lastContent') ??
-      localStorage.setItem('lastContent', thisContent);
+      localStorage.getItem('ojLastContent') ??
+      localStorage.setItem('ojLastContent', thisContent);
 
     /** @type {HTMLElement | null} 전체 영상 길이 표시 요소 */
     const durationElement = document.querySelector('.text-duration');
@@ -122,7 +122,7 @@ function playWavvesNextEpisode(targetNode) {
 
     // 다음 에피소드로 넘어갈 수 있는 경우 클릭
     if (link && lastContent !== thisContent) {
-      localStorage.setItem('lastContent', thisContent);
+      localStorage.setItem('ojLastContent', thisContent);
       link.click();
     }
   }
@@ -135,27 +135,43 @@ function playWavvesNextEpisode(targetNode) {
 function playTivingNextEpisode(targetNode) {
   const isTving = location.hostname.includes('tving');
   console.log(isTving);
-  if (isTving && targetNode) {
-    const remainTimeElement = document.querySelector('.remain-time');
+  if (!isTving || !targetNode) {
+    return;
+  }
 
-    if (remainTimeElement) {
-      const remainTimeText = remainTimeElement.textContent.trim();
-      const [minutes, seconds] = remainTimeText.split(':').map(Number);
+  const episodeManager = new globalThis.EpisodeManager(); // EpisodeManager 인스턴스 생성
+  const currentContentId = episodeManager.getTvingContentId(); // 현재 시청 중인 콘텐츠 ID
+  const lastContent =
+    localStorage.getItem('ojLastContent') ??
+    localStorage.setItem('ojLastContent', currentContentId);
+  console.log('ojLastContent', lastContent);
+  console.log('currentContent', currentContentId);
 
-      // 티빙은 어떤기준으로 다음회차 재생을 해야할지 고민이넴
-      if (minutes < 1 && seconds < 40) {
-        console.log('남은 시간이 40초 미만이므로 자동 재생을 중지합니다.');
-        return;
-      }
+  if (lastContent === currentContentId) {
+    console.log('이미 재생한 콘텐츠이므로 자동 재생을 중지합니다.');
+    return;
+  }
+
+  const remainTimeElement = document.querySelector('.remain-time');
+
+  if (remainTimeElement) {
+    const remainTimeText = remainTimeElement.textContent.trim();
+    const [minutes, seconds] = remainTimeText.split(':').map(Number);
+
+    // 티빙은 어떤기준으로 다음회차 재생을 해야할지 고민이넴
+    if (minutes < 1 && seconds < 40) {
+      console.log('남은 시간이 40초 미만이므로 자동 재생을 중지합니다.');
+      return;
     }
+  }
 
-    const nextEpisodeButton = targetNode.querySelector('button');
+  const nextEpisodeButton = targetNode.querySelector('button');
 
-    if (nextEpisodeButton) {
-      nextEpisodeButton.click();
-    } else {
-      console.log('다음 에피소드 버튼을 찾을 수 없습니다.');
-    }
+  if (nextEpisodeButton) {
+    localStorage.setItem('ojLastContent', currentContentId);
+    nextEpisodeButton.click();
+  } else {
+    console.log('다음 에피소드 버튼을 찾을 수 없습니다.');
   }
 }
 

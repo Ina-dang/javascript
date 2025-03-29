@@ -60,8 +60,8 @@ function playNextEpisode() {
     const link = nextEposiodeButton.querySelector('a');
     const thisContent = globalThis.getContentIdFromUrl();
     const lastContent =
-      localStorage.getItem('lastContent') ??
-      localStorage.setItem('lastContent', thisContent);
+      localStorage.getItem('ojLastContent') ??
+      localStorage.setItem('ojLastContent', thisContent);
 
     // 1분 미만으로 남았을 때는 남은 스토리 그냥 다 보기로 함
     const durationElement = document.querySelector('.text-duration');
@@ -76,7 +76,7 @@ function playNextEpisode() {
 
     // 다음 회차에서 이전으로 넘어갔을때 자꾸 이전회를 볼 수 없게되어서 스토리지로 마지막 회차를 저장하게 수정
     if (link && lastContent !== thisContent) {
-      localStorage.setItem('lastContent', thisContent);
+      localStorage.setItem('ojLastContent', thisContent);
       link.click();
     }
   }
