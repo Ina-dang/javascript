@@ -6,6 +6,50 @@ function handleUrlChange() {
     console.log(
       `URL 변경 감지: 이전 URL: ${previousUrl}, 새로운 URL: ${location.pathname}`
     );
+
+    // URL 변경 시, ojPop 값 가져오기
+    chrome.storage.local.get(['ojPop'], async function (result) {
+      console.log('result::', result); // 저장된 값 확인
+      if (result.ojPop && result.ojPop.wavve !== undefined) {
+        const wavveStatus = result.ojPop.wavve;
+        console.log('wavveStatus 값:', wavveStatus);
+        if (wavveStatus.all) {
+          console.log(11111);
+          /** @type {ElementObserver} 오프닝 스킵 버튼 감지 */
+          const openingObserver = new globalThis.ElementObserver(
+            'opening-skip-btn',
+            handleSkip
+          );
+          openingObserver.observe();
+          /** @type {ElementObserver} 다음 에피소드 자동 재생 감지 */
+          const nextEpisodeObserver = new globalThis.ElementObserver(
+            'next-episode-box',
+            playWavvesNextEpisode,
+            true
+          );
+          nextEpisodeObserver.observe();
+        } else if (wavveStatus.openingSkip && !wavveStatus.nextPlay) {
+          console.log(22222);
+          /** @type {ElementObserver} 오프닝 스킵 버튼 감지 */
+          const openingObserver = new globalThis.ElementObserver(
+            'opening-skip-btn',
+            handleSkip
+          );
+          openingObserver.observe();
+        } else if (!wavveStatus.openingSkip && wavveStatus.nextPlay) {
+          console.log(33333);
+          /** @type {ElementObserver} 다음 에피소드 자동 재생 감지 */
+          const nextEpisodeObserver = new globalThis.ElementObserver(
+            'next-episode-box',
+            playWavvesNextEpisode,
+            true
+          );
+          nextEpisodeObserver.observe();
+        }
+      } else {
+        console.log('ojPop 값이 없습니다.');
+      }
+    });
   }
 
   if (currentObserver) {
@@ -37,6 +81,7 @@ function createNewEpisodeObserver() {
   );
   nextEpisodeObserver.observe();
 }
+
 // URL 변경을 감지하는 MutationObserver 설정
 const urlChangeObserver = new MutationObserver(handleUrlChange);
 urlChangeObserver.observe(document.body, { childList: true, subtree: true });
@@ -47,20 +92,49 @@ urlChangeObserver.observe(document.body, { childList: true, subtree: true });
 if (location.hostname.includes('wavve')) {
   console.log('여기는 웨이브');
 
-  /** @type {ElementObserver} 오프닝 스킵 버튼 감지 */
-  const openingObserver = new globalThis.ElementObserver(
-    'opening-skip-btn',
-    handleSkip
-  );
-  openingObserver.observe();
-
-  /** @type {ElementObserver} 다음 에피소드 자동 재생 감지 */
-  const nextEpisodeObserver = new globalThis.ElementObserver(
-    'next-episode-box',
-    playWavvesNextEpisode,
-    true
-  );
-  nextEpisodeObserver.observe();
+  //url 바뀌었을때 ojPop값을 가져와서 사용
+  chrome.storage.local.get(['ojPop'], async function (result) {
+    console.log('result::', result); // 저장된 값 확인
+    if (result.ojPop.wavve !== undefined) {
+      const wavveStatus = result.ojPop.wavve;
+      console.log('wavveStatus 값:', wavveStatus);
+      if (wavveStatus.all) {
+        console.log(11111);
+        /** @type {ElementObserver} 오프닝 스킵 버튼 감지 */
+        const openingObserver = new globalThis.ElementObserver(
+          'opening-skip-btn',
+          handleSkip
+        );
+        openingObserver.observe();
+        /** @type {ElementObserver} 다음 에피소드 자동 재생 감지 */
+        const nextEpisodeObserver = new globalThis.ElementObserver(
+          'next-episode-box',
+          playWavvesNextEpisode,
+          true
+        );
+        nextEpisodeObserver.observe();
+      } else if (wavveStatus.openingSkip && !wavveStatus.nextPlay) {
+        console.log(22222);
+        /** @type {ElementObserver} 오프닝 스킵 버튼 감지 */
+        const openingObserver = new globalThis.ElementObserver(
+          'opening-skip-btn',
+          handleSkip
+        );
+        openingObserver.observe();
+      } else if (!wavveStatus.openingSkip && wavveStatus.nextPlay) {
+        console.log(33333);
+        /** @type {ElementObserver} 다음 에피소드 자동 재생 감지 */
+        const nextEpisodeObserver = new globalThis.ElementObserver(
+          'next-episode-box',
+          playWavvesNextEpisode,
+          true
+        );
+        nextEpisodeObserver.observe();
+      }
+    } else {
+      console.log('ojPop 값이 없습니다.');
+    }
+  });
 } else if (location.hostname.includes('tving')) {
   console.log('여기는 티빙');
   createNewEpisodeObserver();

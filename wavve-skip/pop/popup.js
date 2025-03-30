@@ -1,10 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
+  chrome.storage.local.get(['ojPop'], function (result) {
+    const ojPop = result.ojPop || {};
+
+    setInitialSwitchState('wavve', ojPop.wavve);
+    setInitialSwitchState('tving', ojPop.tving);
+    console.log('ojPop');
+  });
+
   // 각 섹션에 대한 설정
   const settings = {
     wavve: {
-      allSwitch: '#wavveAll', // 변경된 id 사용
-      openingSkipSwitch: '#wavveOpeningSkip', // 변경된 id 사용
-      nextPlaySwitch: '#wavveNextPlay', // 변경된 id 사용
+      allSwitch: '#wavveAll',
+      openingSkipSwitch: '#wavveOpeningSkip',
+      nextPlaySwitch: '#wavveNextPlay',
       enableFeatures: enableWavveFeatures,
       disableFeatures: disableWavveFeatures,
       actions: {
@@ -14,9 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
       },
     },
     tving: {
-      allSwitch: '#tvingAll', // 변경된 id 사용
-      openingSkipSwitch: '#tvingOpeningSkip', // 변경된 id 사용
-      nextPlaySwitch: '#tvingNextPlay', // 변경된 id 사용
+      allSwitch: '#tvingAll',
+      openingSkipSwitch: '#tvingOpeningSkip',
+      nextPlaySwitch: '#tvingNextPlay',
       enableFeatures: enableTvingFeatures,
       disableFeatures: disableTvingFeatures,
       actions: {
@@ -30,40 +38,125 @@ document.addEventListener('DOMContentLoaded', function () {
   for (const platform in settings) {
     const platformSettings = settings[platform];
 
-    addEventListenerToSwitch(
-      platformSettings.allSwitch,
-      platformSettings.actions.all
-    );
-    addEventListenerToSwitch(
-      platformSettings.openingSkipSwitch,
-      platformSettings.actions.openingSkip
-    );
-    addEventListenerToSwitch(
-      platformSettings.nextPlaySwitch,
-      platformSettings.actions.nextPlay
-    );
+    Object.keys(platformSettings.actions).forEach((key) => {
+      addEventListenerToSwitch(
+        platformSettings[`${key}Switch`],
+        platformSettings.actions[key]
+      );
+    });
   }
 
   function addEventListenerToSwitch(selector, action) {
     const switchElement = document.querySelector(selector);
-    console.log(`Switch Element for ${selector}: `, switchElement); // 요소 확인 로그
+    if (!switchElement) {
+      console.warn(`⚠️ ${selector} 요소를 찾을 수 없음`);
+      return;
+    }
 
-    if (switchElement) {
-      switchElement.addEventListener('change', (event) => {
-        console.log(`${selector} changed, checked: `, event.target.checked);
-        action(event.target.checked);
-      });
-    } else {
-      console.log(`${selector} not found!`); // 요소를 찾지 못한 경우 로그
+    switchElement.addEventListener('change', (event) => {
+      console.log(`${selector} changed, checked: `, event.target.checked);
+      action(event.target.checked);
+    });
+  }
+
+  function setInitialSwitchState(platform, platformData) {
+    if (!platformData) return;
+
+    // 전체 켜기 상태에 따른 개별 기능 스위치 설정
+    if (platformData.all !== undefined) {
+      updateSwitchUI(`#${platform}All input`, platformData.all);
+    }
+    if (platformData.openingSkip !== undefined) {
+      updateSwitchUI(`#${platform}OpeningSkip input`, platformData.openingSkip);
+    }
+    if (platformData.nextPlay !== undefined) {
+      updateSwitchUI(`#${platform}NextPlay input`, platformData.nextPlay);
     }
   }
 });
 
-function handleWavveAllSwitch() {}
+/**
+ * 웨이브 전체 켜기/끄기 핸들러
+ */
+function handleWavveAllSwitch(isChecked) {
+  console.log(`handleWavveAllSwitch 실행됨: ${isChecked}`);
+
+  // "전체 켜기" 상태에 맞춰 관련 스위치 UI 변경
+  updateSwitchUI('#wavveOpeningSkip input', isChecked);
+  updateSwitchUI('#wavveNextPlay input', isChecked);
+
+  setTimeout(() => {
+    updateWavveStorage(isChecked);
+  }, 50);
+}
+
+/**
+ * UI에서 스위치 상태 변경 (이벤트 트리거 포함)
+ */
+function updateSwitchUI(selector, isChecked) {
+  const switchElement = document.querySelector(selector);
+  if (switchElement) {
+    switchElement.checked = isChecked;
+  } else {
+    console.warn(`⚠️ ${selector} 요소를 찾을 수 없음`);
+  }
+}
+
+/**
+ * 웨이브 관련 설정을 스토리지에 저장
+ */
+function updateWavveStorage(isChecked) {
+  chrome.storage.local.get(['ojPop'], function (result) {
+    const updatedStorage = {
+      ...(result.ojPop ?? {}),
+      wavve: {
+        all: isChecked,
+        openingSkip: isChecked,
+        nextPlay: isChecked,
+      },
+    };
+
+    chrome.storage.local.set({ ojPop: updatedStorage }, function () {
+      console.log('업데이트된 스토리지 값:', updatedStorage);
+    });
+  });
+}
+
+/**
+ * 개별 기능 토글 핸들러
+ */
+function handleWavveOpeningSkipSwitch(isChecked) {
+  console.log(`handleWavveOpeningSkipSwitch 실행됨: ${isChecked}`);
+  updateWavveFeature('openingSkip', isChecked);
+}
+
+function handleWavveNextPlaySwitch(isChecked) {
+  console.log(`handleWavveNextPlaySwitch 실행됨: ${isChecked}`);
+  updateWavveFeature('nextPlay', isChecked);
+}
+
+/**
+ * 개별 기능 스토리지 업데이트
+ */
+function updateWavveFeature(feature, isChecked) {
+  chrome.storage.local.get(['ojPop'], function (result) {
+    const updatedStorage = {
+      ...(result.ojPop ?? {}),
+      wavve: {
+        ...(result.ojPop?.wavve ?? {}),
+        [feature]: isChecked,
+      },
+    };
+
+    chrome.storage.local.set({ ojPop: updatedStorage }, function () {
+      console.log(`${feature} 업데이트됨:`, updatedStorage);
+    });
+  });
+}
+
+// TVING 핸들러 (추후 확장 가능)
 function handleTvingAllSwitch() {}
-function handleWavveOpeningSkipSwitch() {}
 function handleTvingOpeningSkipSwitch() {}
-function handleWavveNextPlaySwitch() {}
 function handleTvingNextPlaySwitch() {}
 
 function enableWavveFeatures() {}
