@@ -16,11 +16,21 @@ class EpisodeManager {
     return pathSegments[pathSegments.length - 1]; // URL의 마지막 경로 추출
   }
 
-  playNextEpisode(link) {
-    const currentContentId = this.getContentId();
+  playNextEpisode(link, platform) {
+    const currentContentId = this.getContentId(); // 현재 콘텐츠 ID
+    const lastContent = JSON.parse(
+      localStorage.getItem('ojLastContent') || '{}'
+    );
+    const platformLastContent = lastContent[platform]; // 'wavve' or 'tving' 등
 
-    if (this.lastContent !== currentContentId) {
-      localStorage.setItem('ojLastContent', currentContentId);
+    if (platformLastContent !== currentContentId) {
+      localStorage.setItem(
+        'ojLastContent',
+        JSON.stringify({
+          ...lastContent,
+          [platform]: currentContentId,
+        })
+      );
       link.click();
     }
   }

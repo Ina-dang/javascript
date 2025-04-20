@@ -14,7 +14,6 @@ function handleUrlChange() {
         const wavveStatus = result.ojPop.wavve;
         console.log('wavveStatus 값:', wavveStatus);
         if (wavveStatus.all) {
-          console.log(11111);
           /** @type {ElementObserver} 오프닝 스킵 버튼 감지 */
           const openingObserver = new globalThis.ElementObserver(
             'opening-skip-btn',
@@ -168,10 +167,10 @@ function playWavvesNextEpisode(targetNode) {
 
     /** @type {string} 현재 시청 중인 콘텐츠 ID */
     const thisContent = globalThis.Utility.getContentIdFromUrl();
-
-    const lastContent =
-      localStorage.getItem('ojLastContent') ??
-      localStorage.setItem('ojLastContent', thisContent);
+    const lastContent = JSON.parse(
+      localStorage.getItem('ojLastContent') || '{}'
+    );
+    const wavvesLastContent = lastContent.wavve;
 
     /** @type {HTMLElement | null} 전체 영상 길이 표시 요소 */
     const durationElement = document.querySelector('.text-duration');
@@ -187,16 +186,26 @@ function playWavvesNextEpisode(targetNode) {
     /** @type {string} 현재 재생 시간 */
     const now = nowElement ? nowElement.textContent : '';
 
-    console.log(link, lastContent, thisContent);
+    console.log(link, wavvesLastContent, thisContent);
 
     // 재생 시간이 1분 미만이면 자동 재생하지 않음
     if (episodeManager.isLessThanOneMinute(duration, now)) {
       return;
     }
-
+    const isContentIdNewer = globalThis.Utility.isContentIdNewer(
+      wavvesLastContent,
+      thisContent
+    );
     // 다음 에피소드로 넘어갈 수 있는 경우 클릭
-    if (link && lastContent !== thisContent) {
-      localStorage.setItem('ojLastContent', thisContent);
+    if (link && isContentIdNewer) {
+      console.log(isContentIdNewer);
+      localStorage.setItem(
+        'ojLastContent',
+        JSON.stringify({
+          ...lastContent,
+          wavve: thisContent,
+        })
+      );
       link.click();
     }
   }
@@ -208,24 +217,23 @@ function playWavvesNextEpisode(targetNode) {
  */
 function playTivingNextEpisode(targetNode) {
   const isTving = location.hostname.includes('tving');
-  console.log(isTving);
+
   if (!isTving || !targetNode) {
     return;
   }
 
   const episodeManager = new globalThis.EpisodeManager(); // EpisodeManager 인스턴스 생성
-  const currentContentId = episodeManager.getTvingContentId(); // 현재 시청 중인 콘텐츠 ID
-  const lastContent =
-    localStorage.getItem('ojLastContent') ??
-    localStorage.setItem('ojLastContent', currentContentId);
-  console.log('ojLastContent', lastContent);
-  console.log('currentContent', currentContentId);
-
-  if (lastContent === currentContentId) {
+  const thisContent = episodeManager.getTvingContentId(); // 현재 시청 중인 콘텐츠 ID
+  const lastContent = JSON.parse(localStorage.getItem('ojLastContent') || '{}');
+  const tvingLastContent = lastContent.tving;
+  const isContentIdNewer = globalThis.Utility.isContentIdNewer(
+    tvingLastContent,
+    thisContent
+  );
+  if (!isContentIdNewer) {
     console.log('이미 재생한 콘텐츠이므로 자동 재생을 중지합니다.');
     return;
   }
-
   const remainTimeElement = document.querySelector('.remain-time');
 
   if (remainTimeElement) {
@@ -242,7 +250,13 @@ function playTivingNextEpisode(targetNode) {
   const nextEpisodeButton = targetNode.querySelector('button');
 
   if (nextEpisodeButton) {
-    localStorage.setItem('ojLastContent', currentContentId);
+    localStorage.setItem(
+      'ojLastContent',
+      JSON.stringify({
+        ...lastContent,
+        tving: thisContent,
+      })
+    );
     nextEpisodeButton.click();
   } else {
     console.log('다음 에피소드 버튼을 찾을 수 없습니다.');
