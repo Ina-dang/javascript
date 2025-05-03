@@ -36,20 +36,38 @@ class Utility {
   }
 
   /**
-   * 문자열에서 숫자 부분을 추출하여 두 콘텐츠 ID를 비교합니다.
-   * target이 base보다 큰 경우 true를 반환합니다.
+   * 플랫폼에 따라 콘텐츠 ID가 새로운지 판단합니다.
+   * - wavve: target ID가 base보다 크면 true
+   * - tving: target ID가 base와 다르거나, 현재 회차가 '1화'면 true
    *
-   * @param {string} base 기준 콘텐츠 ID (예: 'E004267586')
-   * @param {string} target 비교할 콘텐츠 ID (예: 'E004267587')
-   * @returns {boolean} target의 숫자 부분이 base보다 크면 true, 같거나 작으면 false
+   * @param {string} base 기준 콘텐츠 ID
+   * @param {string} target 비교할 콘텐츠 ID
+   * @param {string} platform 'tving' 또는 'wavve' 등
+   * @returns {boolean}
    */
-  static isContentIdNewer(base, target) {
+  static isContentIdNewer(base, target, platform) {
+    if (platform === 'tving') {
+      const isDifferent = base !== target;
+
+      const isFirstEpisode = (() => {
+        const header = document.querySelector(
+          'div[data-testid="player-header"] span[data-testid="player-header-title"]'
+        );
+        return header?.textContent.includes('1화') ?? false;
+      })();
+
+      return isDifferent || isFirstEpisode;
+    }
+
+    // 기본 비교: 숫자 추출 후 크기 비교
     const extractNumber = (str = '') => {
       const numberOnly = str?.replace(/\D/g, '');
-      return BigInt(numberOnly);
+      return BigInt(numberOnly || 0n);
     };
+
     const baseNum = extractNumber(base);
     const targetNum = extractNumber(target);
+
     return targetNum > baseNum;
   }
 }

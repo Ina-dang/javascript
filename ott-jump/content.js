@@ -228,7 +228,8 @@ function playTivingNextEpisode(targetNode) {
   const tvingLastContent = lastContent.tving;
   const isContentIdNewer = globalThis.Utility.isContentIdNewer(
     tvingLastContent,
-    thisContent
+    thisContent,
+    'tving'
   );
   if (!isContentIdNewer) {
     console.log('이미 재생한 콘텐츠이므로 자동 재생을 중지합니다.');
