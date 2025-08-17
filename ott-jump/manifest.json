@@ -8,6 +8,8 @@
       "matches": ["*://www.wavve.com/*", "*://www.tving.com/*"],
       "js": [
         "common.js",
+        "tvingTracker.js",
+        "wavveTracker.js",
         "elementObserver.js",
         "episodeManager.js",
         "content.js"
