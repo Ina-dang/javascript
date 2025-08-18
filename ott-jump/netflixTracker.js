@@ -1,16 +1,8 @@
-// MutationObserver로 DOM 변화를 감지해 플레이어 로딩 확인
-const observer = new MutationObserver(() => {
-  initTvingTracker();
-});
-
-// 페이지 전체 감시 (동적 로딩 대응)
-observer.observe(document.body, { childList: true, subtree: true });
-
-class TvingWatchTracker {
+class NetflixWatchTracker {
   constructor(contentId, remainSelector) {
     this.contentId = contentId;
-    this.remainSelector = remainSelector;
-    this.initialRemain = null;
+    this.remainSelector = remainSelector; // 남은 시간 span 선택자
+    this.initialSec = null;
     this.startTime = null;
     this.interval = null;
   }
@@ -18,7 +10,10 @@ class TvingWatchTracker {
   getRemainSeconds() {
     const remainText = document.querySelector(this.remainSelector)?.textContent;
     if (!remainText) return null;
-    return globalThis.Utility.getSeconds(remainText);
+
+    // 예: "0:45" → 45초
+    const [m, s] = remainText.split(':').map(Number);
+    return m * 60 + s;
   }
 
   startTracking() {
@@ -26,16 +21,15 @@ class TvingWatchTracker {
       const remain = this.getRemainSeconds();
       if (remain == null) return;
 
-      if (this.initialRemain == null) {
-        this.initialRemain = remain;
+      if (this.initialSec == null) {
+        this.initialSec = remain;
         this.startTime = Date.now();
-        console.log('⏱️ Tving tracking started:', this.initialRemain, '초');
+        console.log('⏱️ Netflix tracking started, remain:', remain, '초');
         return;
       }
 
-      const watchSec = this.initialRemain - remain;
-
-      console.log('tving current watchSec:', watchSec);
+      const watchSec = this.initialSec - remain;
+      console.log('Netflix current remain:', remain, '초, watchSec:', watchSec);
       if (watchSec < 0) {
         console.warn(
           '⚠️ watchSec 음수 발생. 초기화 재시도',
@@ -46,7 +40,7 @@ class TvingWatchTracker {
         return;
       } else if (watchSec >= 180) {
         // 3분 경과
-        this.saveTemporary();
+        this.saveTempContent();
         this.stopTracking();
       }
     }, 5000);
@@ -56,12 +50,16 @@ class TvingWatchTracker {
     if (this.interval) clearInterval(this.interval);
   }
 
-  // 임시 저장
-  saveTemporary() {
+  saveTempContent() {
+    const tempContent = JSON.parse(
+      localStorage.getItem('ojWatchedContent') || '{}'
+    );
+    if (tempContent['netflix'] === this.contentId) return;
+
     localStorage.setItem(
       'ojWatchedContent',
-      JSON.stringify({ tving: this.contentId, timestamp: Date.now() })
+      JSON.stringify({ ...tempContent, netflix: this.contentId })
     );
-    console.log('📝 Tving 콘텐츠 임시 저장됨:', this.contentId);
+    console.log(`✅ Netflix 콘텐츠 3분 경과 임시 저장:`, this.contentId);
   }
 }

@@ -16,6 +16,13 @@ class EpisodeManager {
     return pathSegments[pathSegments.length - 1]; // URL의 마지막 경로 추출
   }
 
+  getNetflixContentId() {
+    const urlParams = new URLSearchParams(
+      new URL(document.location.href).search
+    );
+    return urlParams.get('trackId');
+  }
+
   playNextEpisode(link, platform) {
     const currentContentId = this.getContentId(); // 현재 콘텐츠 ID
     const lastContent = JSON.parse(

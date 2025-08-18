@@ -4,9 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     setInitialSwitchState('wavve', ojPop.wavve);
     setInitialSwitchState('tving', ojPop.tving);
+    setInitialSwitchState('netflix', ojPop.netflix);
   });
 
-  const platforms = ['wavve', 'tving'];
+  const platforms = ['wavve', 'tving', 'netflix'];
   const features = ['openingSkip', 'nextPlay'];
 
   platforms.forEach((platform) => {

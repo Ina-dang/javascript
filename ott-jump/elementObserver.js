@@ -1,15 +1,23 @@
 //  DOM의 변화를 감지하고, 특정 스타일이나 클래스 변화를 감지하는 로직을 이 파일에 넣습니다.
 class ElementObserver {
-  constructor(selector, callback, observeClass = false) {
+  constructor(selector, callback, platform, observeClass = false) {
     this.selector = selector;
     this.callback = callback;
     this.observeClass = observeClass; // class 변경을 감지할지 style 변경을 감지할지 선택
+    this.platform = platform;
     this.previousState = undefined;
   }
 
   observe() {
     const observer = new MutationObserver(() => {
-      const targetNode = document.querySelector(`[class*="${this.selector}"]`);
+      let targetNode;
+      if (this.platform === 'netflix') {
+        targetNode = document.querySelector(
+          'button[data-uia="next-episode-seamless-button"]'
+        );
+      } else {
+        targetNode = document.querySelector(`[class*="${this.selector}"]`);
+      }
       if (!targetNode) return;
       let currentState;
 

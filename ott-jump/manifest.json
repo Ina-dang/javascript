@@ -5,11 +5,16 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://www.wavve.com/*", "*://www.tving.com/*"],
+      "matches": [
+        "*://www.wavve.com/*",
+        "*://www.tving.com/*",
+        "*://*.netflix.com/*"
+      ],
       "js": [
         "common.js",
         "tvingTracker.js",
         "wavveTracker.js",
+        "netflixTracker.js",
         "elementObserver.js",
         "episodeManager.js",
         "content.js"

@@ -15,13 +15,31 @@ class Utility {
   }
 
   /**
-   * 'mm:ss' 형식의 문자열을 초(second) 단위의 숫자로 변환합니다.
-   * @param {string} timeStr 'mm:ss' 형식의 시간 문자열 (예: '01:30')
-   * @returns {number} 초 단위의 시간 (예: 90)
+   * 현재 URL에서 'trackId' 파라미터 값을 추출합니다.
+   * @returns {string | null} 콘텐츠 ID (예: 'E004267586'), 없으면 null
+   */
+  static getTrackIdFromUrl() {
+    const urlParams = new URLSearchParams(
+      new URL(document.location.href).search
+    );
+    return urlParams.get('trackId');
+  }
+
+  /**
+   * 'hh:mm:ss' 또는 'mm:ss' 형식 문자열을 초 단위로 변환합니다.
+   * @param {string} timeStr 시간 문자열 (예: '01:30' 또는 '01:02:15')
+   * @returns {number} 초 단위의 시간
    */
   static getSeconds(timeStr) {
-    const [mm, ss] = timeStr.split(':').map(Number);
-    return mm * 60 + ss;
+    const parts = timeStr.split(':').map(Number);
+    if (parts.length === 2) {
+      const [mm, ss] = parts;
+      return mm * 60 + ss;
+    } else if (parts.length === 3) {
+      const [hh, mm, ss] = parts;
+      return hh * 3600 + mm * 60 + ss;
+    }
+    return 0;
   }
 
   /**

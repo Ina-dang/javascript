@@ -39,8 +39,15 @@ class WavveWatchTracker {
       const watchSec = current - this.initialSec;
 
       console.log('Wavve current:', current, '초, watchSec:', watchSec);
-
-      if (watchSec >= 180) {
+      if (watchSec < 0) {
+        console.warn(
+          '⚠️ watchSec 음수 발생. 초기화 재시도',
+          current,
+          this.initialSec
+        );
+        this.initialSec = current;
+        return;
+      } else if (watchSec >= 180) {
         // 3분 경과
         this.saveTempContent();
         this.stopTracking();
