@@ -39,10 +39,10 @@ class TvingWatchTracker {
       if (watchSec < 0) {
         console.warn(
           '⚠️ watchSec 음수 발생. 초기화 재시도',
-          current,
-          this.initialSec
+          remain,
+          this.initialRemain
         );
-        this.initialSec = current;
+        this.initialRemain = remain;
         return;
       } else if (watchSec >= 180) {
         // 3분 경과

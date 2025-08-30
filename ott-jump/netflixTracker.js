@@ -21,22 +21,22 @@ class NetflixWatchTracker {
       const remain = this.getRemainSeconds();
       if (remain == null) return;
 
-      if (this.initialSec == null) {
-        this.initialSec = remain;
+      if (this.initialRemain == null) {
+        this.initialRemain = remain;
         this.startTime = Date.now();
         console.log('⏱️ Netflix tracking started, remain:', remain, '초');
         return;
       }
 
-      const watchSec = this.initialSec - remain;
+      const watchSec = this.initialRemain - remain;
       console.log('Netflix current remain:', remain, '초, watchSec:', watchSec);
       if (watchSec < 0) {
         console.warn(
           '⚠️ watchSec 음수 발생. 초기화 재시도',
-          current,
-          this.initialSec
+          remain,
+          this.initialRemain
         );
-        this.initialSec = current;
+        this.initialRemain = remain;
         return;
       } else if (watchSec >= 180) {
         // 3분 경과
