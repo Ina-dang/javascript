@@ -22,14 +22,18 @@
       "type": "module"
     }
   ],
-  "description": "OTT 오프닝 건너뛰기랑 다음회차를 자동으로 재생해주는 크롬 확장 프로그램이에요! 현재는 웨이브와 티빙이 가능합니다.",
-  "host_permissions": ["https://www.wavve.com/*", "https://www.tving.com/*"],
+  "description": "OTT 오프닝 건너뛰기랑 다음회차를 자동으로 재생해주는 크롬 확장 프로그램이에요! 현재는 웨이브와 티빙, 그리고 넷플릭스가 가능합니다.",
+  "host_permissions": [
+    "https://www.wavve.com/*",
+    "https://www.tving.com/*",
+    "https://www.netflix.com/*"
+  ],
   "icons": {
-    "16": "./images/16.png",
-    "32": "./images/32.png"
+    "16": "images/16.png",
+    "32": "images/32.png"
   },
   "manifest_version": 3,
   "name": "OTT JUMP",
-  "permissions": ["activeTab", "tabs", "storage"],
-  "version": "1.0.0"
+  "permissions": ["storage"],
+  "version": "1.0.2"
 }

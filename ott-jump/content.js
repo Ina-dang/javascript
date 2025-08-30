@@ -81,7 +81,7 @@ function initializePlatformFeatures() {
  */
 const initTvingTracker = () => {
   const remainEl = document.querySelector('.uihide .remain-time');
-  if (!remainEl || trackerStarted) return;
+  if (!remainEl || tvingTrackerStarted) return;
 
   const thisContent = new globalThis.EpisodeManager().getTvingContentId();
   const tracker = new TvingWatchTracker(thisContent, '.uihide .remain-time');
@@ -294,7 +294,7 @@ function playTvingNextEpisode(targetNode) {
   const nextBtn = targetNode?.querySelector('button');
   const episodeManager = new globalThis.EpisodeManager();
   const thisContent = episodeManager.getTvingContentId();
-
+  console.log('playTvingNextEpisode thisContent:', thisContent);
   const tempContent = JSON.parse(
     localStorage.getItem('ojWatchedContent') || '{}'
   );
@@ -314,6 +314,7 @@ function playTvingNextEpisode(targetNode) {
   const remainTimeText = document
     .querySelector('.remain-time')
     ?.textContent?.trim();
+  console.log('remainTimeText:', remainTimeText);
   if (remainTimeText) {
     const [m, s] = remainTimeText.split(':').map(Number);
     if (m < 1 && s < 40) {
