@@ -1,5 +1,7 @@
 # OTT JUMP
 
+브라우저 확장 프로그램(Chrome)으로, OTT 플레이어에서 **오프닝/엔딩 건너뛰기**와 **다음 회차 자동 재생**을 돕는 스크립트 모음입니다. 서비스별 트래커와 공통 유틸을 조합해 동작합니다.
+
 ## OTT 넘겨주는거 귀찮아서 만들었다!
 
 [작업히스토리]
@@ -50,9 +52,11 @@
   - 새로고침시 발생
     > E004325319:1 Attestation check for Topics on https://www.tving.com/ failed.
 
+---
+
 ## 파일 구조
 
-```bash
+```
 OTT-JUMP
  ┣ 📂images
  ┃ ┣ 📜16.png
@@ -60,10 +64,51 @@ OTT-JUMP
  ┣ 📂pop
  ┃ ┣ 📜popup.html
  ┃ ┗ 📜popup.js
- ┣ 📜common.js          # 유틸리티 함수
- ┣ 📜elementObserver.js # DOM 변화 감지하는 옵저버 클래스
- ┣ 📜episodeManager.js  # 오프닝 건너뛰기 및 다음 회차 재생 관리 클래스
- ┣ 📜content.js         # 메인 로직: 각 클래스 조합하여 사용
- ┣ 📜manifest.json
+ ┣ 📜common.js            # 공통 유틸리티 함수
+ ┣ 📜content-functional.js # 초기버전
+ ┣ 📜content-initial.js    # 초기버전
+ ┣ 📜content.js            # 메인 로직: 각 모듈을 조합해 실행
+ ┣ 📜elementObserver.js    # DOM 변화 감지용 옵저버 클래스
+ ┣ 📜episodeManager.js     # 오프닝/엔딩 스킵 및 다음 회차 재생 관리
+ ┣ 📜netflixTracker.js     # Netflix 전용 트래커
+ ┣ 📜tvingTracker.js       # TVING 전용 트래커
+ ┣ 📜waveTracker.js        # wavve 전용 트래커
+ ┣ 📜manifest.json         # 확장 프로그램 메타데이터/권한
  ┗ 📜README.md
 ```
+
+## 주요 기능
+
+- 🕒 **오프닝/엔딩 자동 건너뛰기**  
+  탐지 지점에 도달하면 자동으로 스킵하거나 안내 UI를 트리거합니다.
+- ▶️ **다음 회차 자동 재생**  
+  에피소드 종료 시 다음 회차를 찾아 재생 대기/자동 시작.
+- 🧭 **서비스별 트래커 분리**  
+  `*Tracker.js`에서 각 OTT의 DOM/단축키/플레이어 API 차이를 흡수.
+- 👀 **DOM 변화 감지 기반 동작**  
+  `elementObserver.js`로 플레이어/컨트롤이 로드될 때만 안전하게 동작.
+
+---
+
+## 동작 개요
+
+1. **콘텐츠 스크립트 주입**: `content-initial.js`/`content-functional.js`가 환경을 준비하고, 필요한 경우 `content.js`를 호출합니다.
+2. **감시 시작**: `elementObserver.js`가 플레이어 및 컨트롤 영역을 관찰합니다.
+3. **에피소드 제어**: 조건이 충족되면 `episodeManager.js`가 스킵/다음 회차 재생을 수행합니다.
+4. **플랫폼 적응**: 현재 호스트(넷플릭스/웨이브/티빙 등)에 맞는 `*Tracker.js`가 선택되어 구체 동작을 위임합니다.
+5. **팝업 UI**: `/pop/popup.html`에서 기본 상태 확인/간단 제어(필요 시)를 제공합니다.
+
+---
+
+## 파일별 역할
+
+- `manifest.json` — 확장 이름/버전/권한/매칭 URL/콘텐츠 스크립트 정의
+- `common.js` — 포맷터, 안전 실행 래퍼, 타임아웃/지연 유틸 등 공통 함수
+- `elementObserver.js` — `MutationObserver` 래퍼, DOM 로드/변화 이벤트 브리지
+- `episodeManager.js` — 스킵 버튼 탐지/클릭, 다음 에피소드 탐색 및 재생 로직
+- `content-initial.js` — 초기 환경 준비(전역 훅/가드, 사전 체크)
+- `content-functional.js` — 기능 실행 엔트리(상황별로 분리된 초기화 지점)
+- `content.js` — 서비스 감지 → 트래커 선택 → 옵저버/매니저 결합
+- `netflixTracker.js` / `tvingTracker.js` / `waveTracker.js` — 사이트별 셀렉터/동작 캡슐화
+- `/pop/popup.html`, `/pop/popup.js` — 브라우저 툴바 팝업 UI
+- `/images/16.png`, `/images/32.png` — 확장 아이콘
