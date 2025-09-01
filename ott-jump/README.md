@@ -1,6 +1,7 @@
 # OTT JUMP
 
-브라우저 확장 프로그램(Chrome)으로, OTT 플레이어에서 **오프닝/엔딩 건너뛰기**와 **다음 회차 자동 재생**을 돕는 스크립트 모음입니다. 서비스별 트래커와 공통 유틸을 조합해 동작합니다.
+브라우저 확장 프로그램(Chrome)으로, OTT 플레이어에서 **오프닝/엔딩 건너뛰기**와 **다음 회차 자동 재생**을 돕는 스크립트 모음입니다.  
+서비스별 트래커와 공통 유틸, DOM 옵저버를 조합해 동작합니다.
 
 ## OTT 넘겨주는거 귀찮아서 만들었다!
 
@@ -65,17 +66,19 @@ OTT-JUMP
  ┃ ┣ 📜popup.html
  ┃ ┗ 📜popup.js
  ┣ 📜common.js            # 공통 유틸리티 함수
- ┣ 📜content-functional.js # 초기버전
- ┣ 📜content-initial.js    # 초기버전
- ┣ 📜content.js            # 메인 로직: 각 모듈을 조합해 실행
+ ┣ 📜content-initial.js # 초기 버전(legacy)
+ ┣ 📜content-functional.js # 초기 버전(legacy)
+ ┣ 📜content.js            # 메인 로직: 플랫폼 감지 → 트래커 초기화 → 옵저버/매니저 결합
  ┣ 📜elementObserver.js    # DOM 변화 감지용 옵저버 클래스
- ┣ 📜episodeManager.js     # 오프닝/엔딩 스킵 및 다음 회차 재생 관리
+ ┣ 📜episodeManager.js     # 오프닝 스킵 및 다음 회차 재생 관리
  ┣ 📜netflixTracker.js     # Netflix 전용 트래커
  ┣ 📜tvingTracker.js       # TVING 전용 트래커
  ┣ 📜waveTracker.js        # wavve 전용 트래커
  ┣ 📜manifest.json         # 확장 프로그램 메타데이터/권한
  ┗ 📜README.md
 ```
+
+> `content-initial.js`, `content-functional.js`는 현재 메인 로직(`content.js`)에 통합되기 전 **초기 버전(legacy 코드)** 으로만 남아있습니다.
 
 ## 주요 기능
 
@@ -84,19 +87,20 @@ OTT-JUMP
 - ▶️ **다음 회차 자동 재생**  
   에피소드 종료 시 다음 회차를 찾아 재생 대기/자동 시작.
 - 🧭 **서비스별 트래커 분리**  
-  `*Tracker.js`에서 각 OTT의 DOM/단축키/플레이어 API 차이를 흡수.
+  Netflix, TVING, Wavve 각 플랫폼 전용 트래커
 - 👀 **DOM 변화 감지 기반 동작**  
-  `elementObserver.js`로 플레이어/컨트롤이 로드될 때만 안전하게 동작.
+  `elementObserver.js`로 플레이어/컨트롤이 로드될 때만 안전하게 동작.  
+  URL 변경 감지 → 트래커 재생 초기화
 
 ---
 
 ## 동작 개요
 
-1. **콘텐츠 스크립트 주입**: `content-initial.js`/`content-functional.js`가 환경을 준비하고, 필요한 경우 `content.js`를 호출합니다.
-2. **감시 시작**: `elementObserver.js`가 플레이어 및 컨트롤 영역을 관찰합니다.
-3. **에피소드 제어**: 조건이 충족되면 `episodeManager.js`가 스킵/다음 회차 재생을 수행합니다.
-4. **플랫폼 적응**: 현재 호스트(넷플릭스/웨이브/티빙 등)에 맞는 `*Tracker.js`가 선택되어 구체 동작을 위임합니다.
-5. **팝업 UI**: `/pop/popup.html`에서 기본 상태 확인/간단 제어(필요 시)를 제공합니다.
+1. **콘텐츠 스크립트 주입**: `content.js`가 환경을 준비하고 동작 시작
+2. **감시 시작**: `elementObserver.js`가 플레이어 및 컨트롤 영역 관찰
+3. **에피소드 제어**: `episodeManager.js`가 스킵/다음 회차 재생 수행
+4. **플랫폼 적응**: 현재 호스트에 맞는 `*Tracker.js`를 선택해 동작
+5. **팝업 UI**: `/pop/popup.html`로 상태 확인/간단 제어
 
 ---
 
@@ -104,11 +108,10 @@ OTT-JUMP
 
 - `manifest.json` — 확장 이름/버전/권한/매칭 URL/콘텐츠 스크립트 정의
 - `common.js` — 포맷터, 안전 실행 래퍼, 타임아웃/지연 유틸 등 공통 함수
-- `elementObserver.js` — `MutationObserver` 래퍼, DOM 로드/변화 이벤트 브리지
-- `episodeManager.js` — 스킵 버튼 탐지/클릭, 다음 에피소드 탐색 및 재생 로직
-- `content-initial.js` — 초기 환경 준비(전역 훅/가드, 사전 체크)
-- `content-functional.js` — 기능 실행 엔트리(상황별로 분리된 초기화 지점)
+- `elementObserver.js` — DOM 로드/변화 이벤트 감지
+- `episodeManager.js` — 스킵 버튼 탐지·클릭, 다음 에피소드 탐색 및 재생
 - `content.js` — 서비스 감지 → 트래커 선택 → 옵저버/매니저 결합
-- `netflixTracker.js` / `tvingTracker.js` / `waveTracker.js` — 사이트별 셀렉터/동작 캡슐화
+- `netflixTracker.js` / `tvingTracker.js` / `waveTracker.js` — 사이트별 셀렉터/동작 캡슐화, 시청 시간 트래킹 및 임시 저장
+- `content-initial.js`, `content-functional.js` — **초기 버전(legacy)**
 - `/pop/popup.html`, `/pop/popup.js` — 브라우저 툴바 팝업 UI
 - `/images/16.png`, `/images/32.png` — 확장 아이콘
